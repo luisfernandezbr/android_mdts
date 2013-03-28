@@ -64,39 +64,13 @@ public class MyServer {
 				}
 
 				if (clientMessage.startsWith("VIEW_ID:")) {
-System.out.println("Client Request: " + clientSenderIp);
 					
-					MySocket client = clients.get(clientSenderIp);
-					if (client.isMaster) {
-						for (String key: clients.keySet()) {
-							MySocket myClientSocket = clients.get(key);
-							
-							Socket clientSocket = myClientSocket.socket;
-							if (!clientSocket.getInetAddress().toString().equals(clientSenderIp)) {
-								DataOutputStream clientDOS = new DataOutputStream(clientSocket.getOutputStream());
-								clientDOS.writeUTF(clientMessage);	
-							}
-							
-						}
-					}
+					handleResponse(clientSenderIp, clientMessage);
+					
 				} else if (clientMessage.startsWith("EDIT:")) {
-					System.out.println("Client Request: " + clientSenderIp);
-					
-					MySocket client = clients.get(clientSenderIp);
-					if (client.isMaster) {
-						for (String key: clients.keySet()) {
-							MySocket myClientSocket = clients.get(key);
-							
-							Socket clientSocket = myClientSocket.socket;
-							if (!clientSocket.getInetAddress().toString().equals(clientSenderIp)) {
-								DataOutputStream clientDOS = new DataOutputStream(clientSocket.getOutputStream());
-								clientDOS.writeUTF(clientMessage);	
-							}
-							
-						}
-					}
-					
-					
+
+					handleResponse(clientSenderIp, clientMessage);
+
 				} else {
 					MySocket client = null;
 					
@@ -146,6 +120,24 @@ System.out.println("Client Request: " + clientSenderIp);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+	}
+
+	private static void handleResponse(String clientSenderIp, String clientMessage) throws IOException {
+		System.out.println("Client Request: " + clientSenderIp);
+		
+		MySocket client = clients.get(clientSenderIp);
+		if (client.isMaster) {
+			for (String key: clients.keySet()) {
+				MySocket myClientSocket = clients.get(key);
+				
+				Socket clientSocket = myClientSocket.socket;
+				if (!clientSocket.getInetAddress().toString().equals(clientSenderIp)) {
+					DataOutputStream clientDOS = new DataOutputStream(clientSocket.getOutputStream());
+					clientDOS.writeUTF(clientMessage);	
+				}
+				
 			}
 		}
 	}

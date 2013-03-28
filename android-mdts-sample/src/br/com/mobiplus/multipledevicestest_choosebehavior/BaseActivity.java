@@ -18,7 +18,7 @@ public class BaseActivity extends Activity {
 		super.onPostResume();
 		
 		//if (mMdtMain == null) {
-			mMdtMain = new MDTMain(this, "192.168.1.6", 8888);
+			mMdtMain = new MDTMain(this, "192.168.1.2", 8888);
 		//}
 		
 		mMdtMain.start();
